@@ -13,7 +13,7 @@ There is [an article about this Docker image](https://binfalse.de/2016/11/25/mai
 
 ### sSMTP
 
-Create a configuration file for sSMTP to mount it to `/etc/ssmtp/ssmtp.conf` of the container:
+Create a configuration file for [sSMTP](https://packages.qa.debian.org/s/ssmtp.html) to mount it to `/etc/ssmtp/ssmtp.conf` of the container:
 
     FromLineOverride=YES
     mailhub=mail.server.tld
