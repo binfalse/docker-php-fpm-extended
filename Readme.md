@@ -4,22 +4,30 @@ This Dockerfile will compile into a Docker image that is based on a [php:fpm](ht
 Additionally,
 
 * it has the PHP-MySQL extension installed
-* sSMTP is installed to provide mail support
+* msmtp is installed to provide mail support
 
 There is [an article about this Docker image](https://binfalse.de/2016/11/25/mail-support-for-docker-s-php-fpm/) in [my blog](https://binfalse.de).
+
+As `sSMTP` is orphaned, I recently needed to migrate to `msmtp`.
+Read more at [Migrating from sSMTP to msmtp](https://binfalse.de/2020/02/17/migrating-from-ssmtp-to-msmtp/).
 
 
 ## Configuration
 
-### sSMTP
+### msmtp
 
-Create a configuration file for [sSMTP](https://packages.qa.debian.org/s/ssmtp.html) to mount it to `/etc/ssmtp/ssmtp.conf` of the container:
+Create a configuration file for [msmtp](https://marlam.de/msmtp/) to mount it to `/etc/msmtprc` of the container:
 
-    FromLineOverride=YES
-    mailhub=mail.server.tld
-    hostname=php-fpm.yourdomain.tld
-    UseTLS=YES
-    UseSTARTTLS=YES
+    defaults
+    port 25
+    tls off
+    
+    account default
+    auth off
+    host mail.server.tld
+    domain php-fpm.yourdomain.tld
+    from webserver@php-fpm.yourdomain.tld
+    add_missing_date_header on
 
 
 ### PHP mail config
@@ -27,7 +35,7 @@ Create a configuration file for [sSMTP](https://packages.qa.debian.org/s/ssmtp.h
 You need to tell PHP to use the sSMTP:
 
     [mail function]
-    sendmail_path = "/usr/sbin/ssmtp -t"
+    sendmail_path = "/usr/bin/msmtp -t"
 
 Mount that file to `/usr/local/etc/php/conf.d/mail.ini`.
 
