@@ -1,4 +1,4 @@
-FROM php:fpm
+FROM php:8.3-fpm
 MAINTAINER martin scharm <https://binfalse.de/contact>
 
 # Install SSMTP for mail support
